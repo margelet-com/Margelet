@@ -8,23 +8,21 @@
 </head>
 <body>
 
-    <div class="glass-card">
+    <div class="glass-card" id="auth-container">
         <img src="https://i.imgur.com/Sx7pmLM.png" alt="Логотип" class="logo">
 
         <div id="screen-register" class="screen active">
             <h2>Создать аккаунт</h2>
             <p class="subtitle">Присоединяйся в Marglet</p>
-            
             <form id="register-form">
                 <div class="input-group">
-                    <input type="email" placeholder="Электронная почта" required>
+                    <input type="email" id="reg-email" placeholder="Электронная почта" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Придумайте пароль" minlength="6" required>
+                    <input type="password" id="reg-password" placeholder="Придумайте пароль" minlength="6" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
             </form>
-            
             <div class="bottom-link">
                 Уже есть аккаунт? <span onclick="goToScreen('screen-login')">Войти</span>
             </div>
@@ -33,67 +31,95 @@
         <div id="screen-login" class="screen">
             <h2>С возвращением!</h2>
             <p class="subtitle">Рады видеть вас снова</p>
-            
             <form id="login-form">
                 <div class="input-group">
-                    <input type="email" placeholder="Электронная почта" required>
+                    <input type="email" id="login-email" placeholder="Электронная почта" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Пароль" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
                 </div>
-                <span class="forgot-password" onclick="alert('Восстановление пароля в разработке')">Забыли пароль?</span>
+                <span class="forgot-password" onclick="openForgotScreen()">Забыли пароль?</span>
                 <button type="submit" class="btn btn-primary">Войти</button>
             </form>
-            
             <div class="bottom-link">
                 Нет аккаунта? <span onclick="goToScreen('screen-register')">Создать</span>
+            </div>
+        </div>
+
+        <div id="screen-forgot" class="screen">
+            <h2>Восстановление</h2>
+            <p class="subtitle" id="forgot-subtitle">Введите почту для сброса</p>
+            <form id="forgot-form">
+                <div class="input-group">
+                    <input type="email" id="forgot-email" placeholder="Электронная почта" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Сбросить пароль</button>
+            </form>
+            <div class="bottom-link">
+                <span onclick="goToScreen('screen-login')">Вернуться назад</span>
             </div>
         </div>
 
         <div id="screen-code" class="screen">
             <h2>Подтверждение</h2>
             <p class="subtitle">Мы отправили код на вашу почту</p>
-            
             <div class="code-container">
-                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
-                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
             </div>
-            
             <div class="bottom-link">
                 <span onclick="goToScreen('screen-register')">Назад</span>
             </div>
         </div>
 
-<div id="screen-phone" class="screen">
-    <h2>Безопасность</h2>
-    <p class="subtitle">Привяжите номер телефона для защиты аккаунта</p>
-    
-    <form id="phone-form">
-        <div class="phone-input-container">
-            <div class="country-picker" id="country-picker-trigger">
-                <span id="current-flag">🇷🇺</span>
-                <span id="current-code">+7</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="white" stroke-alpha="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            
-            <input type="tel" id="phone-field" placeholder="000 000 00 00" required>
-
-            <div class="country-dropdown" id="country-dropdown">
-                <div class="search-box">
-                    <input type="text" id="country-search" placeholder="Поиск страны...">
+        <div id="screen-phone" class="screen">
+            <h2>Безопасность</h2>
+            <p class="subtitle">Привяжите номер телефона</p>
+            <form id="phone-form">
+                <div class="phone-input-container">
+                    <div class="country-picker" id="country-picker-trigger">
+                        <span id="current-flag">🇷🇺</span>
+                        <span id="current-code">+7</span>
+                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="white" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <input type="tel" id="phone-field" placeholder="000 000 00 00" required>
+                    <div class="country-dropdown" id="country-dropdown">
+                        <div class="search-box"><input type="text" id="country-search" placeholder="Поиск страны..."></div>
+                        <ul class="country-list" id="country-list"></ul>
+                    </div>
                 </div>
-                <ul class="country-list" id="country-list">
-                    </ul>
-            </div>
+                <button type="submit" class="btn btn-primary">Привязать номер</button>
+                <button type="button" class="btn btn-secondary" onclick="enterApp()">Пропустить</button>
+            </form>
         </div>
-        
-        <button type="submit" class="btn btn-primary">Привязать номер</button>
-        <button type="button" class="btn btn-secondary" onclick="alert('Добро пожаловать!')">Пропустить</button>
-    </form>
-</div>
+    </div>
 
+    <div id="screen-app" class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar"></div>
+                <span id="display-user-email">User</span>
+            </div>
+            <div class="chat-list">
+                <div class="chat-item active">
+                    <div class="avatar"></div>
+                    <div class="chat-info"><b>Поддержка</b><p>Добро пожаловать!</p></div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </aside>
+        <main class="chat-window">
+            <div class="chat-header">Чат с поддержкой</div>
+            <div class="messages" id="messages-box">
+                <div class="message incoming">Привет! Рады видеть тебя в нашей сети.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Напишите сообщение...">
+                <button>✉</button>
+            </div>
+        </main>
     </div>
 
     <script src="script.js"></script>
