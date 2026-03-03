@@ -3,13 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой базовый проект</title>
+    <title>Margelet</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1 id="title">Привет, мир!</h1>
-        <button id="myButton">Нажми меня</button>
+
+    <div class="glass-card">
+        <img src="https://i.imgur.com/Sx7pmLM.png" alt="Логотип" class="logo">
+
+        <div id="screen-register" class="screen active">
+            <h2>Создать аккаунт</h2>
+            <p class="subtitle">Присоединяйся в Margelet</p>
+            
+            <form id="register-form">
+                <div class="input-group">
+                    <input type="email" id="register-email" placeholder="Электронная почта" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-password" placeholder="Придумайте пароль" minlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+            
+            <div class="bottom-link">
+                Уже есть аккаунт? <span onclick="goToScreen('screen-login')">Войти</span>
+            </div>
+        </div>
+
+        <div id="screen-login" class="screen">
+            <h2>С возвращением!</h2>
+            <p class="subtitle">Рады видеть вас снова</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Электронная почта" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+            
+            <div class="bottom-link">
+                Нет аккаунта? <span onclick="goToScreen('screen-register')">Создать</span>
+            </div>
+        </div>
+
     </div>
 
     <script src="script.js"></script>
