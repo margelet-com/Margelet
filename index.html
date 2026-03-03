@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Margelet</title>
+    <title>Социальная Сеть</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,14 +13,14 @@
 
         <div id="screen-register" class="screen active">
             <h2>Создать аккаунт</h2>
-            <p class="subtitle">Присоединяйся в Margelet</p>
+            <p class="subtitle">Присоединяйся в Marglet</p>
             
             <form id="register-form">
                 <div class="input-group">
-                    <input type="email" id="register-email" placeholder="Электронная почта" required>
+                    <input type="email" placeholder="Электронная почта" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="register-password" placeholder="Придумайте пароль" minlength="6" required>
+                    <input type="password" placeholder="Придумайте пароль" minlength="6" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
             </form>
@@ -36,11 +36,12 @@
             
             <form id="login-form">
                 <div class="input-group">
-                    <input type="email" id="login-email" placeholder="Электронная почта" required>
+                    <input type="email" placeholder="Электронная почта" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <input type="password" placeholder="Пароль" required>
                 </div>
+                <span class="forgot-password" onclick="alert('Восстановление пароля в разработке')">Забыли пароль?</span>
                 <button type="submit" class="btn btn-primary">Войти</button>
             </form>
             
@@ -48,6 +49,50 @@
                 Нет аккаунта? <span onclick="goToScreen('screen-register')">Создать</span>
             </div>
         </div>
+
+        <div id="screen-code" class="screen">
+            <h2>Подтверждение</h2>
+            <p class="subtitle">Мы отправили код на вашу почту</p>
+            
+            <div class="code-container">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric" required>
+            </div>
+            
+            <div class="bottom-link">
+                <span onclick="goToScreen('screen-register')">Назад</span>
+            </div>
+        </div>
+
+<div id="screen-phone" class="screen">
+    <h2>Безопасность</h2>
+    <p class="subtitle">Привяжите номер телефона для защиты аккаунта</p>
+    
+    <form id="phone-form">
+        <div class="phone-input-container">
+            <div class="country-picker" id="country-picker-trigger">
+                <span id="current-flag">🇷🇺</span>
+                <span id="current-code">+7</span>
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="white" stroke-alpha="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            
+            <input type="tel" id="phone-field" placeholder="000 000 00 00" required>
+
+            <div class="country-dropdown" id="country-dropdown">
+                <div class="search-box">
+                    <input type="text" id="country-search" placeholder="Поиск страны...">
+                </div>
+                <ul class="country-list" id="country-list">
+                    </ul>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Привязать номер</button>
+        <button type="button" class="btn btn-secondary" onclick="alert('Добро пожаловать!')">Пропустить</button>
+    </form>
+</div>
 
     </div>
 
