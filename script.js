@@ -1,141 +1,136 @@
-// Функция переключения экранов
-function goToScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-    
-    if(screenId === 'screen-code') {
-        setTimeout(() => document.querySelector('.code-input').focus(), 100);
-    }
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Социальная Сеть</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-// Вход в само приложение (профиль)
-function enterApp(email) {
-    document.getElementById('auth-container').style.display = 'none';
-    document.getElementById('screen-app').classList.add('active');
-    document.getElementById('display-user-email').textContent = email || "Пользователь";
-}
+    <div class="glass-card" id="auth-container">
+        <img src="https://i.imgur.com/Sx7pmLM.png" alt="Логотип" class="logo">
 
-// Выход
-function logout() {
-    document.getElementById('auth-container').style.display = 'block';
-    document.getElementById('screen-app').classList.remove('active');
-    goToScreen('screen-login');
-}
+        <div id="screen-register" class="screen active">
+            <h2>Создать аккаунт</h2>
+            <p class="subtitle">Присоединяйся в Marglet</p>
+            <form id="register-form">
+                <div class="input-group">
+                    <input type="email" id="reg-email" placeholder="Электронная почта" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="reg-password" placeholder="Придумайте пароль" minlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+            <div class="bottom-link">
+                Уже есть аккаунт? <span onclick="goToScreen('screen-login')">Войти</span>
+            </div>
+        </div>
 
-// Регистрация
-document.getElementById('register-form').addEventListener('submit', function(e) {
-    e.preventDefault(); 
-    const email = document.getElementById('reg-email').value;
-    const password = document.getElementById('reg-password').value;
-    let users = JSON.parse(localStorage.getItem('socialNetworkUsers')) || [];
+        <div id="screen-login" class="screen">
+            <h2>С возвращением!</h2>
+            <p class="subtitle">Рады видеть вас снова</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Электронная почта" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                </div>
+                <div class="forgot-password-link" onclick="openForgotScreen()">Забыли пароль?</div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+            <div class="bottom-link">
+                Нет аккаунта? <span onclick="goToScreen('screen-register')">Создать</span>
+            </div>
+        </div>
 
-    if (users.some(u => u.email === email)) {
-        alert('Пользователь с такой почтой уже существует!');
-    } else {
-        users.push({ email, password });
-        localStorage.setItem('socialNetworkUsers', JSON.stringify(users));
-        localStorage.setItem('currentUser', email);
-        goToScreen('screen-code');
-    }
-});
+        <div id="screen-forgot" class="screen">
+            <h2>Восстановление</h2>
+            <p class="subtitle">Введите почту вашего аккаунта</p>
+            <form id="forgot-form">
+                <div class="input-group">
+                    <input type="email" id="forgot-email" placeholder="Электронная почта" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Сбросить пароль</button>
+            </form>
+            <div class="bottom-link">
+                <span onclick="goToScreen('screen-login')">Вернуться назад</span>
+            </div>
+        </div>
 
-// Вход
-document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    let users = JSON.parse(localStorage.getItem('socialNetworkUsers')) || [];
-    
-    const user = users.find(u => u.email === email && u.password === password);
-    if (user) {
-        localStorage.setItem('currentUser', email);
-        enterApp(email);
-    } else {
-        alert('Неверная почта или пароль');
-    }
-});
+        <div id="screen-code" class="screen">
+            <h2>Подтверждение</h2>
+            <p class="subtitle">Мы отправили код на вашу почту</p>
+            <div class="code-container">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+            </div>
+            <div class="bottom-link">
+                <span onclick="goToScreen('screen-register')">Назад</span>
+            </div>
+        </div>
 
-// Логика "Забыли пароль"
-function openForgotScreen() {
-    const loginEmail = document.getElementById('login-email').value;
-    document.getElementById('forgot-email').value = loginEmail;
-    goToScreen('screen-forgot');
-}
+        <div id="screen-phone" class="screen">
+            <h2>Безопасность</h2>
+            <p class="subtitle">Привяжите номер телефона</p>
+            <form id="phone-form">
+                <div class="phone-input-container">
+                    <div class="country-picker" id="country-picker-trigger">
+                        <span id="current-flag">🇷🇺</span>
+                        <span id="current-code">+7</span>
+                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="white" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <input type="tel" id="phone-field" placeholder="000 000 00 00" required>
+                    <div class="country-dropdown" id="country-dropdown">
+                        <div class="search-box"><input type="text" id="country-search" placeholder="Поиск страны..."></div>
+                        <ul class="country-list" id="country-list"></ul>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Привязать номер</button>
+                <button type="button" class="btn btn-secondary" onclick="enterApp()">Пропустить</button>
+            </form>
+        </div>
+    </div>
 
-document.getElementById('forgot-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('forgot-email').value;
-    let users = JSON.parse(localStorage.getItem('socialNetworkUsers')) || [];
-    
-    if (users.some(u => u.email === email)) {
-        // Если аккаунт есть, имитируем отправку кода
-        goToScreen('screen-code');
-    } else {
-        alert('На данную почту не зарегистрирован аккаунт');
-    }
-});
+    <div id="screen-app" class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar-main"></div>
+                <div class="user-info">
+                    <span id="display-user-email">User</span>
+                    <small>Online</small>
+                </div>
+            </div>
+            <div class="chat-list">
+                <div class="chat-item active">
+                    <div class="avatar"></div>
+                    <div class="chat-details">
+                        <b>Команда Marglet</b>
+                        <p>Добро пожаловать в сеть!</p>
+                    </div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Выйти из аккаунта</button>
+        </aside>
+        <main class="chat-window">
+            <div class="chat-header">Диалог с поддержкой</div>
+            <div class="messages-area" id="messages-box">
+                <div class="msg incoming">Привет! Теперь у тебя есть свой аккаунт. Это визуальный прототип твоей соцсети.</div>
+            </div>
+            <div class="message-input-bar">
+                <input type="text" placeholder="Написать сообщение...">
+                <button class="send-btn">➔</button>
+            </div>
+        </main>
+    </div>
 
-// Обработка телефона
-document.getElementById('phone-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    enterApp(localStorage.getItem('currentUser'));
-});
-
-// --- ОСТАЛЬНАЯ ЛОГИКА (Код, страны) БЕЗ ИЗМЕНЕНИЙ ---
-
-const codeInputs = document.querySelectorAll('.code-input');
-codeInputs.forEach((input, index) => {
-    input.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        if (e.target.value !== '' && index < codeInputs.length - 1) codeInputs[index + 1].focus();
-        checkCodeComplete();
-    });
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-            codeInputs[index - 1].focus();
-            codeInputs[index - 1].value = '';
-        }
-    });
-});
-
-function checkCodeComplete() {
-    const isComplete = Array.from(codeInputs).every(input => input.value !== '');
-    if (isComplete) {
-        setTimeout(() => {
-            codeInputs.forEach(input => { input.classList.add('success'); });
-            setTimeout(() => {
-                codeInputs.forEach(input => { input.classList.remove('success'); input.value = ''; });
-                // Если мы восстанавливали пароль, просто вернем на вход, если регались - на телефон
-                const activeScreen = document.querySelector('.screen.active');
-                if(activeScreen.id === 'screen-code') goToScreen('screen-phone');
-            }, 1000);
-        }, 300);
-    }
-}
-
-const countries = [
-    { name: "Россия", code: "+7", flag: "🇷🇺" },
-    { name: "Украина", code: "+380", flag: "🇺🇦" },
-    { name: "Беларусь", code: "+375", flag: "🇧🇾" },
-    { name: "Казахстан", code: "+7", flag: "🇰🇿" },
-    { name: "США", code: "+1", flag: "🇺🇸" }
-];
-
-const countryPickerTrigger = document.getElementById('country-picker-trigger');
-const countryDropdown = document.getElementById('country-dropdown');
-const countryList = document.getElementById('country-list');
-const currentFlag = document.getElementById('current-flag');
-const currentCode = document.getElementById('current-code');
-
-function renderCountries() {
-    countryList.innerHTML = '';
-    countries.forEach(country => {
-        const li = document.createElement('li');
-        li.className = 'country-item';
-        li.innerHTML = `<span class="flag">${country.flag}</span><span class="name">${country.name}</span><span class="code">${country.code}</span>`;
-        li.onclick = () => {
-            currentFlag.textContent = country.flag;
-            currentCode.textContent = country.code;
+    <script src="script.js"></script>
+</body>
+</html>
             countryDropdown.classList.remove('show');
         };
         countryList.appendChild(li);
